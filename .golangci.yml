@@ -23,12 +23,13 @@ linters:
   enable:
     - asciicheck
     - bodyclose
+    - depguard
     - dogsled
     - dupl
     - durationcheck
     - errorlint
     - exhaustive
-    - copyloopvar
+    - exportloopref
     - funlen
     - gci
     - gocognit
