@@ -2,7 +2,6 @@ package hw02unpackstring
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 	"strings"
 	"unicode"
@@ -18,7 +17,7 @@ func Unpack(s string) (string, error) {
 	runes := []rune(s)
 	var result strings.Builder
 
-	//проверка 1 символа, что не число
+	// проверка 1 символа, что не число
 	if len(runes) > 1 && unicode.IsDigit(runes[0]) {
 		return isBab()
 	}
@@ -27,32 +26,26 @@ func Unpack(s string) (string, error) {
 		char := runes[i]
 		isString := false
 
-		//экранирован
+		// экранирован
 		if runes[i] == '\\' {
-			if unicode.IsDigit(runes[i+1]) || runes[i+1] == '\\' {
-				char = runes[i+1]
-				isString = true
-				i++
-			} else {
+			if !unicode.IsDigit(runes[i+1]) && runes[i+1] != '\\' {
 				return isBab()
 			}
+
+			char = runes[i+1]
+			isString = true
+			i++
 		}
 		if !unicode.IsDigit(char) || isString {
-			//следующий символ - цифра
+			// следующий символ - цифра
 			if i+1 < len(runes) && unicode.IsDigit(runes[i+1]) {
-
-				//нет - это не цифра, а число
-				if i+2 < len(runes) && unicode.IsDigit(runes[i+2]) {
-					fmt.Println("runes", string(char))
-					return isBab()
-				}
-
 				count, err := strconv.Atoi(string(runes[i+1]))
-				if err == nil {
-					result.WriteString(strings.Repeat(string(char), count))
-				} else {
+
+				// нет - это не цифра, а число
+				if err != nil || i+2 < len(runes) && unicode.IsDigit(runes[i+2]) {
 					return isBab()
 				}
+				result.WriteString(strings.Repeat(string(char), count))
 			} else {
 				result.WriteString(string(char))
 			}
