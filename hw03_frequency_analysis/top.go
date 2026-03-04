@@ -1,7 +1,7 @@
 package hw03frequencyanalysis
 
 import (
-	"slices"
+	"sort"
 	"strings"
 )
 
@@ -32,20 +32,11 @@ func Top10(s string) []string {
 
 	// сортировка
 
-	slices.SortFunc(stats, func(a, b wordStat) int {
-		if a.count != b.count {
-			return b.count - a.count
+	sort.Slice(stats, func(i, j int) bool {
+		if stats[i].count != stats[j].count {
+			return stats[i].count > stats[j].count // По убыванию частоты
 		}
-
-		if a.word < b.word {
-			return -1
-		}
-
-		if a.word > b.word {
-			return 1
-		}
-
-		return 0
+		return stats[i].word < stats[j].word // По алфавиту при равенстве
 	})
 
 	coutRes := 10
