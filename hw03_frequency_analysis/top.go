@@ -48,7 +48,10 @@ func Top10(s string) []string {
 		return 0
 	})
 
-	coutRes := min(10, len(stats))
+	coutRes := 10
+	if len(stats) < coutRes {
+		coutRes = len(stats)
+	}
 
 	for _, s := range stats[:coutRes] {
 		result = append(result, s.word)
