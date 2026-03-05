@@ -34,6 +34,15 @@ func (c *lruCache) Set(key Key, value interface{}) bool {
 		return true
 	}
 
+	// проверим переполнение
+	if c.queue.Len() == c.capacity {
+		lastNode := c.queue.Back()
+		if lastNode != nil {
+			delete(c.items, lastNode.Value.(*cacheItem).key)
+			c.queue.Remove(lastNode)
+		}
+	}
+
 	item := &cacheItem{key: key, value: value}
 	node := c.queue.PushFront(item)
 	c.items[key] = node

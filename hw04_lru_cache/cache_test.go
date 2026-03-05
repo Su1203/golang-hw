@@ -77,3 +77,22 @@ func TestCacheMultithreading(t *testing.T) {
 
 	wg.Wait()
 }
+
+func TestCache_EvictionLimit(t *testing.T) {
+	capacity := 3
+	cache := NewCache(capacity) // n = 3
+
+	cache.Set("1", "one")
+	cache.Set("2", "two")
+	cache.Set("3", "three")
+
+	// Добавляем 4 элемент. 1 должен вытолкнуться.
+	cache.Set("4", "four")
+
+	_, ok := cache.Get("1")
+	require.False(t, ok, "Ключ '1' должен был вытолкнуться")
+
+	val, ok := cache.Get("4")
+	require.True(t, ok)
+	require.Equal(t, "four", val)
+}
