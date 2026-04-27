@@ -63,9 +63,17 @@ func TestCopy(t *testing.T) {
 			}
 
 			want := sourceData[start:end]
+			wantQuoted := fmt.Sprintf("%q", string(want))
+			gotQuoted := fmt.Sprintf("%q", string(got))
 
 			if string(got) != string(want) {
-				t.Fatalf("copied content mismatch\nwant len: %d\ngot len: %d\nwant: %s\ngot: %s", len(want), len(got), fmt.Sprintf("%q", string(want)), fmt.Sprintf("%q", string(got)))
+				t.Fatalf(
+					"copied content mismatch\nwant len: %d\ngot len: %d\nwant: %s\ngot: %s",
+					len(want),
+					len(got),
+					wantQuoted,
+					gotQuoted,
+				)
 			}
 		})
 	}

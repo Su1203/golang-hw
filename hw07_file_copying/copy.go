@@ -58,7 +58,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 	bar.Finish() // Завершаем прогресс-бар
 
 	if err != nil {
-		return fmt.Errorf("Error copy: %w", err)
+		return fmt.Errorf("error copy: %w", err)
 	}
 
 	return nil
