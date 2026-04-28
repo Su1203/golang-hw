@@ -8,7 +8,7 @@ build:
 	go build -v -o $(BIN) -ldflags "$(LDFLAGS)" ./cmd/calendar
 
 run: build
-	$(BIN) --config ./configs/config.toml
+	$(BIN) -config ./configs/config.toml
 
 build-img:
 	docker build \
@@ -31,9 +31,4 @@ install-lint-deps:
 lint: install-lint-deps
 	golangci-lint run ./...
 
-migrate:
-	@echo "Applying migrations..."
-	@echo "Please run migrations manually using your preferred tool (e.g., goose, migrate)"
-	@echo "Example: psql -U calendar -d calendar -f migrations/001_create_events_table.sql"
-
-.PHONY: build run build-img run-img version test lint migrate
+.PHONY: build run build-img run-img version test lint

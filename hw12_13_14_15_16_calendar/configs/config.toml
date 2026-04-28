@@ -1,12 +1,5 @@
 [logger]
 level = "INFO"
 
-[http]
-host = "localhost"
-port = "8081"
-
-[storage]
-type = "memory"
-
-[database]
-dsn = "host=localhost port=5432 user=calendar password=calendar dbname=calendar sslmode=disable"
+# TODO
+# ...
