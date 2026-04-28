@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -56,7 +57,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, "...Interrupted by signal")
 	case err := <-sendDone:
 		if err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				fmt.Fprintln(os.Stderr, "...EOF")
 			} else {
 				fmt.Fprintf(os.Stderr, "...Send error: %v\n", err)
@@ -64,7 +65,7 @@ func main() {
 		}
 	case err := <-receiveDone:
 		if err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				fmt.Fprintln(os.Stderr, "...Connection was closed by peer")
 			} else {
 				fmt.Fprintf(os.Stderr, "...Receive error: %v\n", err)
