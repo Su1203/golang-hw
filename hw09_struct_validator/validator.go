@@ -108,7 +108,11 @@ func validateField(fieldName string, fieldValue reflect.Value, validateTag strin
 					err = validateString(elem.String(), rule)
 				case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 					err = validateInt(elem.Int(), rule)
-				default:
+				case reflect.Invalid, reflect.Bool, reflect.Uint, reflect.Uint8, reflect.Uint16,
+					reflect.Uint32, reflect.Uint64, reflect.Uintptr, reflect.Float32, reflect.Float64,
+					reflect.Complex64, reflect.Complex128, reflect.Array, reflect.Chan, reflect.Func,
+					reflect.Interface, reflect.Map, reflect.Pointer, reflect.Slice, reflect.Struct,
+					reflect.UnsafePointer:
 					return nil, fmt.Errorf("%w: %v", ErrUnsupportedType, elem.Kind())
 				}
 				if err != nil {
@@ -116,7 +120,10 @@ func validateField(fieldName string, fieldValue reflect.Value, validateTag strin
 				}
 			}
 		}
-	default:
+	case reflect.Invalid, reflect.Bool, reflect.Uint, reflect.Uint8, reflect.Uint16,
+		reflect.Uint32, reflect.Uint64, reflect.Uintptr, reflect.Float32, reflect.Float64,
+		reflect.Complex64, reflect.Complex128, reflect.Array, reflect.Chan, reflect.Func,
+		reflect.Interface, reflect.Map, reflect.Pointer, reflect.Struct, reflect.UnsafePointer:
 	}
 
 	return errors, nil

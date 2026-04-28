@@ -37,11 +37,13 @@ type (
 	}
 )
 
-func TestValidate(t *testing.T) {
-	tests := []struct {
-		in          interface{}
-		expectedErr error
-	}{
+type testCase struct {
+	in          interface{}
+	expectedErr error
+}
+
+func getTestCases() []testCase {
+	return []testCase{
 		{
 			in: User{
 				ID:     "123e4567-e89b-12d3-a456-426614174000",
@@ -173,6 +175,38 @@ func TestValidate(t *testing.T) {
 			expectedErr: ErrNotStruct,
 		},
 	}
+}
+
+func checkError(t *testing.T, err, expectedErr error) {
+	t.Helper()
+
+	if expectedErr == nil {
+		if err != nil {
+			t.Errorf("expected no error, got: %v", err)
+		}
+		return
+	}
+
+	if err == nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+
+	var validationErrors ValidationErrors
+	if errors.As(expectedErr, &validationErrors) {
+		if !errors.As(err, &validationErrors) {
+			t.Errorf("expected ValidationErrors, got: %T", err)
+		}
+		return
+	}
+
+	if !errors.Is(err, expectedErr) {
+		t.Errorf("expected error %v, got: %v", expectedErr, err)
+	}
+}
+
+func TestValidate(t *testing.T) {
+	tests := getTestCases()
 
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("case %d", i), func(t *testing.T) {
@@ -180,29 +214,7 @@ func TestValidate(t *testing.T) {
 			t.Parallel()
 
 			err := Validate(tt.in)
-			
-			if tt.expectedErr == nil {
-				if err != nil {
-					t.Errorf("expected no error, got: %v", err)
-				}
-			} else {
-				if err == nil {
-					t.Errorf("expected error, got nil")
-					return
-				}
-				
-				switch tt.expectedErr.(type) {
-				case ValidationErrors:
-					var validationErrors ValidationErrors
-					if !errors.As(err, &validationErrors) {
-						t.Errorf("expected ValidationErrors, got: %T", err)
-					}
-				default:
-					if !errors.Is(err, tt.expectedErr) {
-						t.Errorf("expected error %v, got: %v", tt.expectedErr, err)
-					}
-				}
-			}
+			checkError(t, err, tt.expectedErr)
 		})
 	}
 }
