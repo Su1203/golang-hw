@@ -7,9 +7,9 @@ import (
 )
 
 var (
-	ErrDateBusy       = errors.New("date is busy")
-	ErrEventNotFound  = errors.New("event not found")
-	ErrInvalidEvent   = errors.New("invalid event")
+	ErrDateBusy      = errors.New("date is busy")
+	ErrEventNotFound = errors.New("event not found")
+	ErrInvalidEvent  = errors.New("invalid event")
 )
 
 type Storage interface {

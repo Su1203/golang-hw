@@ -3,12 +3,13 @@ package sqlstorage
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"time"
 
-	"github.com/fixme_my_friend/hw12_13_14_15_16_calendar/internal/storage"
+	"github.com/Su1203/golang-hw/hw12_13_14_15_16_calendar/internal/storage"
 	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
+	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
 type Storage struct {
@@ -143,10 +144,10 @@ func (s *Storage) GetEventByID(ctx context.Context, id string) (*storage.Event, 
 
 	var event storage.Event
 	err := s.db.GetContext(ctx, &event, query, id)
-	if err == sql.ErrNoRows {
-		return nil, storage.ErrEventNotFound
-	}
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, storage.ErrEventNotFound
+		}
 		return nil, fmt.Errorf("failed to get event: %w", err)
 	}
 

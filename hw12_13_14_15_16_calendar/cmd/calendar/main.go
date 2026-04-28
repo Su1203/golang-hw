@@ -9,11 +9,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/fixme_my_friend/hw12_13_14_15_16_calendar/internal/app"
-	"github.com/fixme_my_friend/hw12_13_14_15_16_calendar/internal/logger"
-	internalhttp "github.com/fixme_my_friend/hw12_13_14_15_16_calendar/internal/server/http"
-	memorystorage "github.com/fixme_my_friend/hw12_13_14_15_16_calendar/internal/storage/memory"
-	sqlstorage "github.com/fixme_my_friend/hw12_13_14_15_16_calendar/internal/storage/sql"
+	"github.com/Su1203/golang-hw/hw12_13_14_15_16_calendar/internal/app"
+	"github.com/Su1203/golang-hw/hw12_13_14_15_16_calendar/internal/logger"
+	internalhttp "github.com/Su1203/golang-hw/hw12_13_14_15_16_calendar/internal/server/http"
+	memorystorage "github.com/Su1203/golang-hw/hw12_13_14_15_16_calendar/internal/storage/memory"
+	sqlstorage "github.com/Su1203/golang-hw/hw12_13_14_15_16_calendar/internal/storage/sql"
 )
 
 var configFile string

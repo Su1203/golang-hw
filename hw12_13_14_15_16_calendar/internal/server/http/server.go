@@ -44,7 +44,7 @@ func NewServer(logger Logger, app Application, host, port string) *Server {
 	return s
 }
 
-func (s *Server) helloHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) helloHandler(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprint(w, "Hello, Calendar!")

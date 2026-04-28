@@ -2,11 +2,12 @@ package memorystorage
 
 import (
 	"context"
+	"errors"
 	"sync"
 	"testing"
 	"time"
 
-	"github.com/fixme_my_friend/hw12_13_14_15_16_calendar/internal/storage"
+	"github.com/Su1203/golang-hw/hw12_13_14_15_16_calendar/internal/storage"
 )
 
 func TestCreateEvent(t *testing.T) {
@@ -65,7 +66,7 @@ func TestCreateEventInvalidData(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := s.CreateEvent(ctx, tt.event)
-			if err != storage.ErrInvalidEvent {
+			if !errors.Is(err, storage.ErrInvalidEvent) {
 				t.Errorf("Expected ErrInvalidEvent, got %v", err)
 			}
 		})
@@ -89,7 +90,7 @@ func TestCreateEventDateBusy(t *testing.T) {
 		t.Fatalf("Failed to create first event: %v", err)
 	}
 
-	event2 := storage.Event{
+	overlappingEvent := storage.Event{
 		ID:        "2",
 		Title:     "Event 2",
 		StartTime: time.Now().Add(30 * time.Minute),
@@ -97,8 +98,8 @@ func TestCreateEventDateBusy(t *testing.T) {
 		UserID:    "user1",
 	}
 
-	err = s.CreateEvent(ctx, event2)
-	if err != storage.ErrDateBusy {
+	err = s.CreateEvent(ctx, overlappingEvent)
+	if !errors.Is(err, storage.ErrDateBusy) {
 		t.Errorf("Expected ErrDateBusy, got %v", err)
 	}
 }
@@ -154,7 +155,7 @@ func TestUpdateEventNotFound(t *testing.T) {
 	}
 
 	err := s.UpdateEvent(ctx, "nonexistent", event)
-	if err != storage.ErrEventNotFound {
+	if !errors.Is(err, storage.ErrEventNotFound) {
 		t.Errorf("Expected ErrEventNotFound, got %v", err)
 	}
 }
@@ -210,8 +211,12 @@ func TestListEventsForDay(t *testing.T) {
 		UserID:    "user1",
 	}
 
-	s.CreateEvent(ctx, event1)
-	s.CreateEvent(ctx, event2)
+	if err := s.CreateEvent(ctx, event1); err != nil {
+		t.Fatalf("Failed to create event1: %v", err)
+	}
+	if err := s.CreateEvent(ctx, event2); err != nil {
+		t.Fatalf("Failed to create event2: %v", err)
+	}
 
 	events, err := s.ListEventsForDay(ctx, today)
 	if err != nil {

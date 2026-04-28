@@ -57,7 +57,14 @@ func (s *Server) loggingMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func formatLogEntry(ip string, timestamp time.Time, method, uri, proto string, status int, latency time.Duration, userAgent string) string {
+func formatLogEntry(
+	ip string,
+	timestamp time.Time,
+	method, uri, proto string,
+	status int,
+	latency time.Duration,
+	userAgent string,
+) string {
 	return ip + " " +
 		"[" + timestamp.Format("02/Jan/2006:15:04:05 -0700") + "] " +
 		method + " " +

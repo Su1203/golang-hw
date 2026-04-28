@@ -1,4 +1,4 @@
-module github.com/fixme_my_friend/hw12_13_14_15_16_calendar
+module github.com/Su1203/golang-hw/hw12_13_14_15_16_calendar
 
 go 1.19
 
