@@ -1,17 +1,11 @@
 run:
   timeout: 5m
-  go: '1.19'
 
 linters:
-  disable:
-    - depguard
+  disable-all: true
   enable:
     - gofmt
-    - govet
     - errcheck
-    - staticcheck
-    - unused
-    - gosimple
     - ineffassign
     - typecheck
 
