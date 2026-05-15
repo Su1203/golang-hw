@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"fmt"
+	"os"
 )
 
 var (
@@ -18,5 +20,19 @@ func init() {
 
 func main() {
 	flag.Parse()
-	// Place your code here.
+
+	// валидация
+	if from == "" || to == "" {
+		fmt.Println("Error: -from and -to are required")
+		os.Exit(1)
+	}
+
+	fmt.Printf("Copying from %s to %s (offset: %d, limit: %d)\n", from, to, offset, limit)
+
+	if err := Copy(from, to, offset, limit); err != nil {
+		fmt.Printf("Ошибка при копировании: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("Копирование успешно завершено.")
 }
